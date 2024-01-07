@@ -1,0 +1,109 @@
+package com.example.demo;
+
+import jakarta.persistence.*;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import javax.swing.text.Document;
+import java.util.Date;
+import java.util.Set;
+
+@Entity
+@Table ( name = "projects")
+public class Project {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    private Long id;
+    private String name;
+    private Date startDate;
+    private Date endDate;
+    private String projectCode;
+
+    private String keywords;
+
+    private boolean isActive;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+
+    @OneToMany(mappedBy = "project")
+    private Set<Document> documents;
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public Set<Document> getDocuments() {
+        return documents;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setDocuments(Set<Document> documents) {
+        this.documents = documents;
+    }
+
+    public interface ProjectRepository extends JpaRepository<Project, Long> {
+        // Métodos personalizados si se necesitan
+    }
+
+}
