@@ -1,0 +1,45 @@
+package com.example.demo;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/documents")
+public class DocumentController {
+
+    @Autowired
+    private DocumentService documentService;
+
+    @GetMapping
+    public ResponseEntity<List<Document>> getAllDocuments() {
+        List<Document> documents = documentService.findAllDocuments();
+        return ResponseEntity.ok(documents);
+    }
+
+    @PostMapping
+    public ResponseEntity<Document> createDocument(@RequestBody Document document) {
+        Document createdDocument = documentService.createDocument(document);
+        return ResponseEntity.ok(createdDocument);
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<Document> getDocumentById(@PathVariable Long id) {
+        Document document = documentService.findDocumentById(id);
+        return ResponseEntity.ok(document);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Document> updateDocument(@PathVariable Long id, @RequestBody Document documentDetails) {
+        Document updatedDocument = documentService.updateDocument(id, documentDetails);
+        return ResponseEntity.ok(updatedDocument);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteDocument(@PathVariable Long id) {
+        documentService.deleteDocument(id);
+        return ResponseEntity.ok().build();
+    }
+
+}
