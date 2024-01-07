@@ -1,0 +1,49 @@
+package com.example.demo;
+
+import org.apache.velocity.exception.ResourceNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+
+@Service
+public class DocumentService {
+
+    @Autowired
+    private Document.DocumentRepository documentRepository;
+
+    public static List<Document> findDocumentByProjectId(Long id) {
+        return null;
+    }
+
+    public List<Document> findAllDocuments() {
+        return documentRepository.findAll();
+    }
+
+    public Document findDocumentById(Long id) {
+        return documentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Document not found with id: " + id));
+    }
+
+    public Document createDocument(Document document) {
+        // Aquí podrías incluir validaciones o lógica de negocio adicional
+        return documentRepository.save(document);
+    }
+
+    public Document updateDocument(Long id, Document documentDetails) {
+        Document document = findDocumentById(id);
+        document.setTitle(documentDetails.getTitle());
+        document.setContent(documentDetails.getContent());
+        document.setId(documentDetails.getId());
+        document.setProject(documentDetails.getProject());
+        document.setType(documentDetails.getType());
+        // Actualizar otros campos...
+        return documentRepository.save(document);
+    }
+
+    public void deleteDocument(Long id) {
+        Document document = findDocumentById(id);
+        documentRepository.delete(document);
+    }
+}
