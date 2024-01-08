@@ -1,0 +1,54 @@
+package com.example.demo;
+
+import org.apache.velocity.exception.ResourceNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class UserService {
+
+    @Autowired
+    private User.UserRepository userRepository;
+
+    public void registerUser(User user) {
+        // Registrar usuario
+    }
+
+    public User loginUser(String username, String password) {
+        // Iniciar sesión
+        return null;
+    }
+
+
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public User findUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+    }
+
+    public User createUser(User user) {
+        // Aquí hacer la encriptacion de la contraseña
+        return userRepository.save(user);
+    }
+
+    public User updateUser(Long id, User userDetails) {
+        User user = findUserById(id);
+        user.setName(userDetails.getName());
+        user.setEmail(userDetails.getEmail());
+        user.setPassword(userDetails.getPassword());
+        user.setId(userDetails.getId());
+        user.setRole(userDetails.getRole());
+        // encriptar contraseña
+        return userRepository.save(user);
+    }
+
+    public void deleteUser(Long id) {
+        User user = findUserById(id);
+        userRepository.delete(user);
+    }
+}
