@@ -1,0 +1,50 @@
+package com.example.demo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/projects")
+public class ProjectController {
+
+    @Autowired
+    private ProjectService projectService;
+
+    @GetMapping
+    public ResponseEntity<List<Project>> getAllProjects() {
+        List<Project> projects = projectService.findAllProjects();
+        return ResponseEntity.ok(projects);
+    }
+
+    @PostMapping
+    public ResponseEntity<Project> createProject(@RequestBody Project project) {
+        Project createdProject = projectService.createProject(project);
+        return ResponseEntity.ok(createdProject);
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<Project> getProjectById(@PathVariable Long id) {
+        Project project = projectService.findProjectById(id);
+        return ResponseEntity.ok(project);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Project> updateProject(@PathVariable Long id, @RequestBody Project projectDetails) {
+        Project updatedProject = projectService.updateProject(id, projectDetails);
+        return ResponseEntity.ok(updatedProject);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProject(@PathVariable Long id) {
+        projectService.deleteProject(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{id}/documents")
+    public ResponseEntity<List<Document>> getProjectDocuments(@PathVariable Long id) {
+        List<Document> documents = DocumentService.findDocumentByProjectId(id);
+        return ResponseEntity.ok(documents);
+    }
+
+}
