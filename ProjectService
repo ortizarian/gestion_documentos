@@ -1,0 +1,48 @@
+package com.example.demo;
+
+import org.apache.velocity.exception.ResourceNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class ProjectService {
+
+    @Autowired
+    private Project.ProjectRepository projectRepository;
+
+    public List<Project> findAllProjects() {
+        return projectRepository.findAll();
+    }
+
+    public Project findProjectById(Long id) {
+        return projectRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Project not found with id: " + id));
+    }
+
+    public Project createProject(Project project) {
+        // Aquí podemos incluir validaciones o lógica de negocio adicional
+        return projectRepository.save(project);
+    }
+
+    public Project updateProject(Long id, Project projectDetails) {
+        Project project = findProjectById(id);
+        project.setName(projectDetails.getName());
+        project.setProjectCode(projectDetails.getProjectCode());
+        project.setId(projectDetails.getId());
+        project.setStartDate(projectDetails.getStartDate());
+        project.setEndDate(projectDetails.getEndDate());
+        project.setActive(projectDetails.isActive());
+        project.setKeywords(projectDetails.getKeywords());
+        project.setDocuments(projectDetails.getDocuments());
+        project.setUser(projectDetails.getUser());
+
+        return projectRepository.save(project);
+    }
+
+    public void deleteProject(Long id) {
+        Project project = findProjectById(id);
+        projectRepository.delete(project);
+    }
+}
